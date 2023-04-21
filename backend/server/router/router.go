@@ -5,9 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/karasuneo/websocket/backend/server/handlers"
+	"github.com/karasuneo/websocket/backend/server/models"
 )
 
 func Init() {
+	hub := models.NewHub()
+	go hub.RunLoop()
 	r := gin.Default()
 
 	r.GET("/",

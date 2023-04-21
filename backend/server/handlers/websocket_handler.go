@@ -6,12 +6,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/karasuneo/websocket/backend/server/models"
 )
 
-type WebsocketHandler struct{}
+type WebsocketHandler struct {
+	hub *models.Hub
+}
 
-func NewWebsocketHandler() *WebsocketHandler {
-	return &WebsocketHandler{}
+func NewWebsocketHandler(hub *models.Hub) *WebsocketHandler {
+	return &WebsocketHandler{
+		hub: hub,
+	}
 }
 
 func (h *WebsocketHandler) Handle(c *gin.Context) {
@@ -20,8 +25,13 @@ func (h *WebsocketHandler) Handle(c *gin.Context) {
 			return true
 		},
 	}
-	_, err := ug.Upgrade(c.Writer, c.Request, nil)
+	ws, err := ug.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	client := models.NewClient(ws)
+	go client.ReadLoop(h.hub.BroadcastCh, h.hub.UnRegisterCh)
+	go client.WriteLoop()
+	h.hub.RegisterCh <- client
 }
