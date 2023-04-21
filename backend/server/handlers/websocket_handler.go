@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -13,13 +14,13 @@ func NewWebsocketHandler() *WebsocketHandler {
 	return &WebsocketHandler{}
 }
 
-func (h *WebsocketHandler) Handle(w http.ResponseWriter, r *http.Request) {
-	upgrader := &websocket.Upgrader{
+func (h *WebsocketHandler) Handle(c *gin.Context) {
+	ug := &websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
-	_, err := upgrader.Upgrade(w, r, nil)
+	_, err := ug.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
