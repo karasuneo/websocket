@@ -1,8 +1,9 @@
+import { useEffect, useRef, useState } from "react";
 import { atom, selector } from "recoil";
 
 const connect = (): Promise<WebSocket> => {
   return new Promise((resolve, reject) => {
-    const socket = new WebSocket("ws://localhost:80/ws");
+    const socket = new WebSocket("ws://localhost:8080/socket");
     socket.onopen = () => {
       console.log("connected");
       resolve(socket);
