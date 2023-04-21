@@ -1,0 +1,25 @@
+version: "3"
+services:
+  go:
+    container_name: Web_Socket_GO
+    build:
+      context: ./Docker/go
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../server:/server
+    ports:
+      - 8080:8080
+    depends_on:
+      - "mysql"
+
+  mysql:
+    container_name: Web_Socket_DB
+    build:
+      context: ./Docker/mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
