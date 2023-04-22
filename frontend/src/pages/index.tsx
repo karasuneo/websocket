@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    socketRef.current = new WebSocket("ws://localhost:8080/socket");
+    socketRef.current = new WebSocket("ws://http://192.168.1.14:8080/socket");
     socketRef.current.onopen = function () {
       setIsConnected(true);
       console.log("Connected");
