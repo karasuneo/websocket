@@ -6,10 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/karasuneo/websocket/backend/server/handlers"
 	"github.com/karasuneo/websocket/backend/server/models"
+	"github.com/karasuneo/websocket/backend/server/services"
 )
 
 func Init() {
-	hub := models.NewHub()
+	pubsub := services.NewPubSubService()
+	hub := models.NewHub(pubsub)
+	go hub.SubscribeMessages()
 	go hub.RunLoop()
 	r := gin.Default()
 
