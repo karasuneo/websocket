@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { atom, selector } from "recoil";
+import { w3cwebsocket } from "websocket";
 
-const connect = (): Promise<WebSocket> => {
+const connect = (): Promise<w3cwebsocket> => {
   return new Promise((resolve, reject) => {
-    const socket = new WebSocket("ws://localhost:8080/socket");
+    const socket = new w3cwebsocket("ws://localhost:8080/socket");
     socket.onopen = () => {
       console.log("connected");
       resolve(socket);
@@ -21,12 +22,12 @@ const connect = (): Promise<WebSocket> => {
 
 const connectWebsocketSelector = selector({
   key: "connectWebsocket",
-  get: async (): Promise<WebSocket> => {
+  get: async (): Promise<w3cwebsocket> => {
     return await connect();
   },
 });
 
-export const websocketAtom = atom<WebSocket>({
+export const websocketAtom = atom<w3cwebsocket>({
   key: "websocket",
   default: connectWebsocketSelector,
 });
