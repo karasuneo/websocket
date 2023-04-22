@@ -25,6 +25,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin
 
   redis:
+    container_name: Web_Socket_Redis
     image: redis:latest
     command: redis-server --appendonly yes
     restart: always

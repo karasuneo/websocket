@@ -1,0 +1,5 @@
+mysql:
+  user: root
+  password: admin
+  protocol: tcp(Web_Socket_DB:3306)
+  dbname: data_sets
