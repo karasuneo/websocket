@@ -18,7 +18,7 @@ func Init() {
 			c.JSON(http.StatusOK, gin.H{"message": "Hello World!"})
 		})
 
-	r.GET("/socket", handlers.HandleWebSocket)
+	r.GET("/socket", handlers.NewWebsocketHandler(hub).Handle)
 
 	r.Run()
 }
